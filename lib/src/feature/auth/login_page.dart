@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:pets_adventure_frontend/src/core/error/global_exception.dart';
 import 'package:pets_adventure_frontend/src/core/widgets/app_loading.dart';
 import 'package:pets_adventure_frontend/src/core/widgets/app_snack_bar.dart';
 import 'package:pets_adventure_frontend/src/feature/auth/dto/login_credential.dart';
 import 'package:pets_adventure_frontend/src/feature/auth/store/auth_store.dart';
+import 'package:pets_adventure_frontend/src/feature/home/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  static const routeName = '/auth/login/';
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -92,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                   if (validate == null) {
                     await store.login(credential);
                   } else {
-                    store.setError(GlobalException(validate));
+                    store.showError(validate);
                   }
                 },
                 child: const Text('Entrar'),
@@ -101,6 +103,11 @@ class _LoginPageState extends State<LoginPage> {
               OutlinedButton(
                 onPressed: () => _showRegisterModal(context),
                 child: const Text('Registrar'),
+              ),
+              const SizedBox(height: 30),
+              OutlinedButton(
+                onPressed: () => Modular.to.navigate(HomePage.routeName),
+                child: const Text('Ir para Home'),
               ),
             ],
           ),

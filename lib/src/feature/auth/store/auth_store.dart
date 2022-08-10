@@ -5,8 +5,10 @@ import 'package:flutter_triple/flutter_triple.dart';
 import 'package:pets_adventure_frontend/src/core/dto/response_dto.dart';
 import 'package:pets_adventure_frontend/src/core/error/global_exception.dart';
 import 'package:pets_adventure_frontend/src/feature/auth/dto/login_credential.dart';
+import 'package:pets_adventure_frontend/src/feature/auth/login_page.dart';
 import 'package:pets_adventure_frontend/src/feature/auth/service/auth_service.dart';
 import 'package:pets_adventure_frontend/src/feature/auth/state/auth_state.dart';
+import 'package:pets_adventure_frontend/src/feature/home/home_page.dart';
 import 'package:uno/uno.dart';
 
 class AuthStore extends StreamStore<GlobalException, AuthState> {
@@ -24,6 +26,7 @@ class AuthStore extends StreamStore<GlobalException, AuthState> {
       final tokenization = await authService.login(credential);
       update(Logged(tokenization));
       setLoading(false);
+      Modular.to.navigate(HomePage.routeName);
     } on UnoError<dynamic> catch (e, s) {
       setLoading(false);
       final responseDto = ResponseDto.fromMap(e.response!.data);
@@ -42,6 +45,18 @@ class AuthStore extends StreamStore<GlobalException, AuthState> {
 
   void logout() {
     update(NotLogged());
-    Modular.to.navigate('/auth/login');
+    Modular.dispose<AuthStore>();
+    Modular.to.navigate(LoginPage.routeName);
+  }
+
+  void showError(String message) {
+    setError(GlobalException(message));
+  }
+
+  bool isLogged() {
+    if (state is Logged) {
+      return true;
+    }
+    return false;
   }
 }
