@@ -21,7 +21,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    super.initState();
     context.read<AuthStore>().observer(
           onError: (e) {
             showSnackBar(context, e.message, SnackBarEnum.error);
@@ -37,71 +36,74 @@ class _LoginPageState extends State<LoginPage> {
               }
           },
         );
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final store = context.watch<AuthStore>();
 
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.network(
-              height: 50,
-              'https://seeklogo.com/images/J/jwt-logo-65D86B4640-seeklogo.com.png',
-            ),
-            const SizedBox(height: 60),
-            TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              onChanged: credential.setEmail,
-              validator: (value) => credential.email.validate(),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Email',
+    return SafeArea(
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.network(
+                height: 50,
+                'https://seeklogo.com/images/J/jwt-logo-65D86B4640-seeklogo.com.png',
               ),
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              onChanged: credential.setPassword,
-              validator: (value) => credential.password.validate(),
-              obscureText: isObscured,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                labelText: 'Password',
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      isObscured = !isObscured;
-                    });
-                  },
-                  icon: Icon(
-                    isObscured ? Icons.visibility_off : Icons.visibility,
+              const SizedBox(height: 60),
+              TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                onChanged: credential.setEmail,
+                validator: (value) => credential.email.validate(),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Email',
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                onChanged: credential.setPassword,
+                validator: (value) => credential.password.validate(),
+                obscureText: isObscured,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: 'Password',
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isObscured = !isObscured;
+                      });
+                    },
+                    icon: Icon(
+                      isObscured ? Icons.visibility_off : Icons.visibility,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                final validate = credential.validate();
-                if (validate == null) {
-                  store.login(credential);
-                } else {
-                  store.setError(GlobalException(validate));
-                }
-              },
-              child: const Text('Entrar'),
-            ),
-            const SizedBox(height: 30),
-            OutlinedButton(
-              onPressed: () => _showRegisterModal(context),
-              child: const Text('Registrar'),
-            ),
-          ],
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: () async {
+                  final validate = credential.validate();
+                  if (validate == null) {
+                    await store.login(credential);
+                  } else {
+                    store.setError(GlobalException(validate));
+                  }
+                },
+                child: const Text('Entrar'),
+              ),
+              const SizedBox(height: 30),
+              OutlinedButton(
+                onPressed: () => _showRegisterModal(context),
+                child: const Text('Registrar'),
+              ),
+            ],
+          ),
         ),
       ),
     );

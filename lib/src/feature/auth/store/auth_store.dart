@@ -1,5 +1,6 @@
 // ignore_for_file: sort_constructors_first
 
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:pets_adventure_frontend/src/core/dto/response_dto.dart';
 import 'package:pets_adventure_frontend/src/core/error/global_exception.dart';
@@ -22,6 +23,7 @@ class AuthStore extends StreamStore<GlobalException, AuthState> {
     try {
       final tokenization = await authService.login(credential);
       update(Logged(tokenization));
+      setLoading(false);
     } on UnoError<dynamic> catch (e, s) {
       setLoading(false);
       final responseDto = ResponseDto.fromMap(e.response!.data);
@@ -40,5 +42,6 @@ class AuthStore extends StreamStore<GlobalException, AuthState> {
 
   void logout() {
     update(NotLogged());
+    Modular.to.navigate('/auth/login');
   }
 }
