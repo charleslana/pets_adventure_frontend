@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:pets_adventure_frontend/src/feature/auth/login_page.dart';
 import 'package:pets_adventure_frontend/src/feature/auth/store/auth_store.dart';
 import 'package:uno/uno.dart';
 
@@ -19,7 +20,16 @@ class _HomePageState extends State<HomePage> {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text('Home Page')),
+        appBar: AppBar(
+          title: const Text('Home Page'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.login),
+              onPressed: () => Modular.to.navigate(LoginPage.routeName),
+              tooltip: 'Go to login route',
+            ),
+          ],
+        ),
         body: Padding(
           padding: const EdgeInsets.all(12),
           child: Center(

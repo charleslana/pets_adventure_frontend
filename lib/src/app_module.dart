@@ -8,6 +8,9 @@ import 'package:pets_adventure_frontend/src/feature/auth/login_page.dart';
 import 'package:pets_adventure_frontend/src/feature/auth/store/auth_store.dart';
 import 'package:pets_adventure_frontend/src/feature/home/home_module.dart';
 import 'package:pets_adventure_frontend/src/feature/home/home_page.dart';
+import 'package:pets_adventure_frontend/src/feature/landing/landing_module.dart';
+import 'package:pets_adventure_frontend/src/feature/landing/landing_page.dart';
+import 'package:pets_adventure_frontend/src/feature/splashscreen/splashscreen_module.dart';
 import 'package:uno/uno.dart';
 
 class AppModule extends Module {
@@ -27,11 +30,13 @@ class AppModule extends Module {
           );
           return uno;
         }),
-        TripleBind.singleton((i) => AuthStore(i(), i())),
+        TripleBind.singleton((i) => AuthStore(i(), i(), i(), i())),
       ];
 
   @override
   List<ModularRoute> routes = [
+    ModuleRoute<AuthModule>(Modular.initialRoute, module: SplashscreenModule()),
+    ModuleRoute<AuthModule>(LandingPage.routeName, module: LandingModule()),
     ModuleRoute<AuthModule>(LoginPage.routeName, module: AuthModule()),
     ModuleRoute<HomeModule>(HomePage.routeName, module: HomeModule()),
   ];
