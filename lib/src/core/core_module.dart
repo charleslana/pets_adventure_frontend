@@ -2,6 +2,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pets_adventure_frontend/src/core/service/encrypt_service.dart';
 import 'package:pets_adventure_frontend/src/core/service/shared_local_storage_service.dart';
 import 'package:pets_adventure_frontend/src/feature/auth/service/auth_service.dart';
+import 'package:pets_adventure_frontend/src/feature/home/service/home_service.dart';
 
 class CoreModule extends Module {
   @override
@@ -10,5 +11,6 @@ class CoreModule extends Module {
         Bind<SharedLocalStorageService>((i) => SharedLocalStorageService(),
             export: true),
         Bind<EncryptService>((i) => EncryptService(), export: true),
+        Bind.singleton<HomeService>((i) => HomeService(i()), export: true),
       ];
 }

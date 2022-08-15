@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pets_adventure_frontend/src/feature/auth/login_page.dart';
 import 'package:pets_adventure_frontend/src/feature/auth/store/auth_store.dart';
+import 'package:pets_adventure_frontend/src/feature/home/model/user_details_model.dart';
+import 'package:pets_adventure_frontend/src/feature/home/service/home_service.dart';
 import 'package:uno/uno.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,6 +16,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<UserDetailsModel> _fetchDetails() async {
+    final homeService = Modular.get<HomeService>();
+    final response = await homeService.getDetails();
+    return response;
+  }
+
   @override
   Widget build(BuildContext context) {
     final store = context.watch<AuthStore>();
@@ -36,6 +49,8 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                _futureDetails(),
+                const SizedBox(height: 30),
                 ElevatedButton(
                   child: const Text('Get user'),
                   onPressed: () async {
@@ -54,6 +69,58 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _futureDetails() {
+    return FutureBuilder(
+      future: _fetchDetails(),
+      builder: (ctx, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                '${snapshot.error} occurred',
+                style: const TextStyle(fontSize: 18),
+              ),
+            );
+          } else if (snapshot.hasData) {
+            final data = snapshot.data as UserDetailsModel;
+            return _details(data);
+          }
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
+  Widget _details(UserDetailsModel userDetailsModel) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('ID'),
+            Text(userDetailsModel.id.toString()),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('E-mail'),
+            Text(userDetailsModel.email),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('Name'),
+            Text(userDetailsModel.name),
+          ],
+        ),
+      ],
     );
   }
 }

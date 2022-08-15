@@ -56,12 +56,12 @@ class AuthStore extends StreamStore<GlobalException, AuthState> {
   }
 
   void logout() {
-    update(NotLogged());
     sharedLocalStorageService
       ..delete(usernameKey)
       ..delete(passwordKey);
     Modular.dispose<AuthStore>();
     Modular.to.navigate(LoginPage.routeName);
+    update(NotLogged());
   }
 
   void showError(String message) {
