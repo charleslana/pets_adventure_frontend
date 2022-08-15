@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pets_adventure_frontend/src/core/const/shared_local_storage_const.dart';
+import 'package:pets_adventure_frontend/src/core/const/version_const.dart';
 import 'package:pets_adventure_frontend/src/core/service/encrypt_service.dart';
 import 'package:pets_adventure_frontend/src/feature/auth/dto/login_credential.dart';
 import 'package:pets_adventure_frontend/src/feature/auth/login_page.dart';
 import 'package:pets_adventure_frontend/src/feature/auth/state/auth_state.dart';
 import 'package:pets_adventure_frontend/src/feature/auth/store/auth_store.dart';
 import 'package:pets_adventure_frontend/src/feature/home/home_page.dart';
+import 'package:pets_adventure_frontend/src/feature/landing/service/landing_service.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -35,14 +37,26 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   Future<void> _fetchVersion() async {
-    await Future<void>.delayed(const Duration(seconds: 3));
     setState(() {
-      loadingText = 'Validando conta...';
+      loadingText = 'Validando versão...';
     });
+    final landingService = Modular.get<LandingService>();
+    final version = await landingService.getVersion();
+    if (version != appVersion) {
+      setState(() {
+        isLoading = false;
+        loadingText =
+            'O aplicativo se encontra desatualizado, por favor atualize em sua loja de aplicações';
+      });
+      return;
+    }
     await _fetchLogin();
   }
 
   Future<void> _fetchLogin() async {
+    setState(() {
+      loadingText = 'Validando conta...';
+    });
     final store = context.watch<AuthStore>();
     final encryptService = Modular.get<EncryptService>();
     final username = await store.sharedLocalStorageService.get(usernameKey);
