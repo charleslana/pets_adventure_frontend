@@ -3,7 +3,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:pets_adventure_frontend/src/core/const/shared_local_storage_const.dart';
-import 'package:pets_adventure_frontend/src/core/dto/response_dto.dart';
+import 'package:pets_adventure_frontend/src/core/dto/response_error_dto.dart';
 import 'package:pets_adventure_frontend/src/core/error/global_exception.dart';
 import 'package:pets_adventure_frontend/src/core/service/encrypt_service.dart';
 import 'package:pets_adventure_frontend/src/core/service/shared_local_storage_service.dart';
@@ -41,7 +41,7 @@ class AuthStore extends StreamStore<GlobalException, AuthState> {
     } on UnoError<dynamic> catch (e, s) {
       update(NotLogged());
       setLoading(false);
-      final responseDto = ResponseDto.fromMap(e.response!.data);
+      final responseDto = ResponseErrorDto.fromMap(e.response!.data);
       setError(GlobalException(responseDto.error, s));
     }
   }

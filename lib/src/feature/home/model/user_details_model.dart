@@ -4,12 +4,12 @@ import 'dart:convert';
 class UserDetailsModel {
   final int id;
   final String email;
-  final String name;
+  final String? name;
 
   UserDetailsModel({
     required this.id,
     required this.email,
-    required this.name,
+    this.name,
   });
 
   UserDetailsModel copyWith({
@@ -36,7 +36,7 @@ class UserDetailsModel {
     return UserDetailsModel(
       id: map['id'] as int,
       email: map['email'] as String,
-      name: map['name'] as String,
+      name: map['name'] != null ? map['name'] as String : null,
     );
   }
 

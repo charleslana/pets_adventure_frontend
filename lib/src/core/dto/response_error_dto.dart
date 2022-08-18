@@ -2,17 +2,17 @@
 
 import 'dart:convert';
 
-class ResponseDto {
+class ResponseErrorDto {
   final String error;
 
-  ResponseDto({
+  ResponseErrorDto({
     required this.error,
   });
 
-  ResponseDto copyWith({
+  ResponseErrorDto copyWith({
     String? error,
   }) {
-    return ResponseDto(
+    return ResponseErrorDto(
       error: error ?? this.error,
     );
   }
@@ -23,14 +23,14 @@ class ResponseDto {
     };
   }
 
-  factory ResponseDto.fromMap(Map<String, dynamic> map) {
-    return ResponseDto(
+  factory ResponseErrorDto.fromMap(Map<String, dynamic> map) {
+    return ResponseErrorDto(
       error: map['error'] as String,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ResponseDto.fromJson(String source) =>
-      ResponseDto.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ResponseErrorDto.fromJson(String source) =>
+      ResponseErrorDto.fromMap(json.decode(source) as Map<String, dynamic>);
 }

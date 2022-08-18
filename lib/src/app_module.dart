@@ -10,6 +10,9 @@ import 'package:pets_adventure_frontend/src/feature/home/home_module.dart';
 import 'package:pets_adventure_frontend/src/feature/home/home_page.dart';
 import 'package:pets_adventure_frontend/src/feature/landing/landing_module.dart';
 import 'package:pets_adventure_frontend/src/feature/landing/landing_page.dart';
+import 'package:pets_adventure_frontend/src/feature/register/register_module.dart';
+import 'package:pets_adventure_frontend/src/feature/register/register_page.dart';
+import 'package:pets_adventure_frontend/src/feature/register/store/register_store.dart';
 import 'package:pets_adventure_frontend/src/feature/splashscreen/splashscreen_module.dart';
 import 'package:uno/uno.dart';
 
@@ -31,6 +34,7 @@ class AppModule extends Module {
           return uno;
         }),
         TripleBind.singleton((i) => AuthStore(i(), i(), i(), i())),
+        TripleBind.singleton((i) => RegisterStore(i(), i())),
       ];
 
   @override
@@ -38,6 +42,7 @@ class AppModule extends Module {
     ModuleRoute<AuthModule>(Modular.initialRoute, module: SplashscreenModule()),
     ModuleRoute<AuthModule>(LandingPage.routeName, module: LandingModule()),
     ModuleRoute<AuthModule>(LoginPage.routeName, module: AuthModule()),
+    ModuleRoute<AuthModule>(RegisterPage.routeName, module: RegisterModule()),
     ModuleRoute<HomeModule>(HomePage.routeName, module: HomeModule()),
   ];
 }

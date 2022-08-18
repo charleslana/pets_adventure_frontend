@@ -9,6 +9,7 @@ void showSnackBar(
     BuildContext context, String message, SnackBarEnum snackBarEnum) {
   ScaffoldMessenger.of(context).removeCurrentSnackBar();
   final snackBar = SnackBar(
+    behavior: SnackBarBehavior.floating,
     duration: const Duration(seconds: 3),
     content: Text(message),
     backgroundColor:

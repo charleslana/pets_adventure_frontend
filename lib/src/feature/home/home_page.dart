@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text('Name'),
-            Text(userDetailsModel.name),
+            Text(userDetailsModel.name ?? ''),
           ],
         ),
       ],
