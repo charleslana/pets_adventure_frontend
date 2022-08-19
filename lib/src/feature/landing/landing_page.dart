@@ -19,6 +19,7 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   bool isLoading = true;
   String loadingText = 'Validando versão...';
+  bool tryAgain = false;
 
   @override
   void initState() {
@@ -50,6 +51,7 @@ class _LandingPageState extends State<LandingPage> {
               {
                 setState(() {
                   isLoading = false;
+                  tryAgain = true;
                   loadingText = 'Falha ao conectar com o servidor';
                 }),
               },
@@ -73,6 +75,8 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final store = context.watch<LandingStore>();
+
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -87,6 +91,19 @@ class _LandingPageState extends State<LandingPage> {
                   loadingText,
                   textAlign: TextAlign.center,
                 ),
+                if (tryAgain) ...[
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        tryAgain = false;
+                        loadingText = 'Tentando novamente';
+                      });
+                      store.getVersion();
+                    },
+                    child: const Text('Tentar novamente'),
+                  ),
+                ],
               ],
             ),
           ),

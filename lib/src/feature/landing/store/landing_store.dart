@@ -23,7 +23,7 @@ class LandingStore extends StreamStore<GlobalException, LandingState> {
 
   @override
   void initStore() {
-    _getVersion();
+    getVersion();
     super.initStore();
   }
 
@@ -31,7 +31,7 @@ class LandingStore extends StreamStore<GlobalException, LandingState> {
     setError(GlobalException(message));
   }
 
-  Future<void> _getVersion() async {
+  Future<void> getVersion() async {
     setLoading(true);
     try {
       final version = await landingService.getVersion();

@@ -34,6 +34,10 @@ class RegisterStore extends StreamStore<GlobalException, RegisterState> {
     } on UnoError<dynamic> catch (e, s) {
       update(NotRegistered());
       setLoading(false);
+      if (e.response == null) {
+        setError(GlobalException('Falhar ao conectar com o servidor'));
+        return;
+      }
       final responseDto = ResponseErrorDto.fromMap(e.response!.data);
       setError(GlobalException(responseDto.error, s));
     }
