@@ -3,7 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pets_adventure_frontend/src/feature/auth/login_page.dart';
 import 'package:pets_adventure_frontend/src/feature/auth/store/auth_store.dart';
 import 'package:pets_adventure_frontend/src/feature/home/model/user_details_model.dart';
-import 'package:pets_adventure_frontend/src/feature/home/service/home_service.dart';
+import 'package:pets_adventure_frontend/src/feature/home/store/home_store.dart';
 import 'package:uno/uno.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,17 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  Future<UserDetailsModel> _fetchDetails() async {
-    final homeService = Modular.get<HomeService>();
-    final response = await homeService.getDetails();
-    return response;
-  }
-
   @override
   Widget build(BuildContext context) {
     final store = context.watch<AuthStore>();
@@ -73,8 +62,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _futureDetails() {
+    final store = context.read<HomeStore>();
+
     return FutureBuilder(
-      future: _fetchDetails(),
+      future: store.fetchDetails(),
       builder: (ctx, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {

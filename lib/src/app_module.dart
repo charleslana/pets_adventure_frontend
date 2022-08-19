@@ -8,6 +8,7 @@ import 'package:pets_adventure_frontend/src/feature/auth/login_page.dart';
 import 'package:pets_adventure_frontend/src/feature/auth/store/auth_store.dart';
 import 'package:pets_adventure_frontend/src/feature/home/home_module.dart';
 import 'package:pets_adventure_frontend/src/feature/home/home_page.dart';
+import 'package:pets_adventure_frontend/src/feature/home/store/home_store.dart';
 import 'package:pets_adventure_frontend/src/feature/landing/landing_module.dart';
 import 'package:pets_adventure_frontend/src/feature/landing/landing_page.dart';
 import 'package:pets_adventure_frontend/src/feature/landing/store/landing_store.dart';
@@ -37,6 +38,7 @@ class AppModule extends Module {
         TripleBind.lazySingleton((i) => LandingStore(i(), i())),
         TripleBind.singleton((i) => AuthStore(i(), i(), i(), i())),
         TripleBind.singleton((i) => RegisterStore(i(), i())),
+        TripleBind.lazySingleton((i) => HomeStore(i(), i())),
       ];
 
   @override
